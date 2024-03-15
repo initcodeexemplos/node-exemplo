@@ -1,23 +1,13 @@
-const htpp = require('http');
-const url = require('url')
+const express = require('express')
 
-htpp.createServer((request, response) => {
-    const parsedUrl = url.parse(request.url, true)
-    const pathName = parsedUrl.pathname
-    const queryParams = parsedUrl.query
+const app = express()
+const porta = 3000
 
-    if(pathName === '/favicon.ico') {
-        response.writeHead(404)
-        response.end();
-        return;
-    }
+app.get('/somar', (req, res) => {
+    const { num1, num2 } = req.query
+    res.send('A soma é: ' + (Number(num1) + Number(num2)))
+})
 
-    console.log(queryParams)
-
-    if (request.method === 'GET') {
-        response.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' })
-        response.write('A soma é: ' + (Number(queryParams.num) + Number(queryParams.num2)));
-        response.end();
-    }
-
-}).listen(9090)
+app.listen(porta, () => {
+    console.log('servidor rodando na porta ' + porta)
+})
